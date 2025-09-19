@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Log - Your Personal Journal Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Daily Log</h1>
+            <p class="app-subtitle">Transform your thoughts into insights with AI</p>
+            <div class="api-status">
+                <span id="api-status-indicator" class="status-indicator">🔄 Initializing...</span>
+            </div>
+        </header>
+
+        <nav class="tab-navigation">
+            <button class="tab-btn active" data-tab="logs">
+                <span class="tab-icon">📝</span>
+                Logs
+            </button>
+            <button class="tab-btn" data-tab="diary">
+                <span class="tab-icon">📖</span>
+                Diary
+            </button>
+            <button class="tab-btn" data-tab="tasks">
+                <span class="tab-icon">✅</span>
+                Tasks
+            </button>
+        </nav>
+
+        <!-- Logs Section -->
+        <section id="logs-section" class="tab-content active">
+            <div class="section-header">
+                <h2>Daily Logs</h2>
+                <p class="section-subtitle">Capture your thoughts, activities, and experiences</p>
+            </div>
+
+            <div class="log-input-area">
+                <div class="input-group">
+                    <label for="log-input" class="form-label">What's on your mind?</label>
+                    <textarea 
+                        id="log-input" 
+                        class="form-control log-textarea" 
+                        placeholder="Write about your day, thoughts, activities... Don't worry about spelling or grammar - just let your thoughts flow."
+                        rows="6"
+                    ></textarea>
+                    <div class="input-meta">
+                        <span id="char-counter" class="char-counter">0 characters</span>
+                        <div class="auto-features">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="auto-diary" checked>
+                                Auto-generate diary
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="auto-tasks" checked>
+                                Auto-extract tasks
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button id="add-log-btn" class="btn btn--primary btn--full-width">
+                    <span class="btn-text">Add Log Entry</span>
+                    <span class="btn-loading hidden">Adding & Processing...</span>
+                </button>
+            </div>
+
+            <div class="logs-history">
+                <div class="section-header">
+                    <h3>Recent Logs</h3>
+                    <div class="logs-stats">
+                        <span id="logs-count">0 logs today</span>
+                        <span id="last-sync" class="last-sync">Last updated: Never</span>
+                    </div>
+                </div>
+                <div id="logs-list" class="logs-list">
+                    <!-- Logs will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Diary Section -->
+        <section id="diary-section" class="tab-content">
+            <div class="section-header">
+                <h2>AI-Generated Diary</h2>
+                <p class="section-subtitle">Your logs transformed into a coherent diary entry</p>
+            </div>
+
+            <div class="diary-controls">
+                <button id="generate-diary-btn" class="btn btn--primary">
+                    Generate Diary Entry
+                </button>
+                <button id="regenerate-diary-btn" class="btn btn--secondary hidden">
+                    Regenerate
+                </button>
+                <button id="update-diary-btn" class="btn btn--outline hidden">
+                    Update with New Logs
+                </button>
+                <button id="diary-history-btn" class="btn btn--outline">
+                    View History
+                </button>
+            </div>
+
+            <div id="diary-history" class="diary-history hidden">
+                <div class="diary-history-header">
+                    <h3>Diary History</h3>
+                    <button id="close-history-btn" class="btn btn--outline">Back to Today</button>
+                </div>
+                <div id="diary-history-list" class="diary-history-list">
+                    <!-- History entries will appear here -->
+                </div>
+            </div>
+
+            <div id="diary-loading" class="loading-indicator hidden">
+                <div class="spinner"></div>
+                <p id="diary-loading-text">Analyzing your logs and generating diary entry...</p>
+            </div>
+
+            <div id="diary-content" class="diary-content hidden">
+                <div class="diary-header">
+                    <h3 id="diary-date">Today's Entry</h3>
+                    <div class="diary-meta">
+                        <span id="diary-source-count">Based on 0 logs</span>
+                        <span id="diary-last-updated" class="diary-timestamp"></span>
+                    </div>
+                </div>
+                <div id="diary-text" class="diary-text">
+                    <!-- Generated diary content will appear here -->
+                </div>
+                <div class="diary-actions">
+                    <button id="export-diary-btn" class="btn btn--outline">
+                        Export as Text
+                    </button>
+                </div>
+            </div>
+
+            <div id="diary-empty-state" class="empty-state">
+                <div class="empty-state-icon">📔</div>
+                <h3>No logs to process</h3>
+                <p>Add some log entries first to generate your diary</p>
+            </div>
+        </section>
+
+        <!-- Tasks Section -->
+        <section id="tasks-section" class="tab-content">
+            <div class="section-header">
+                <h2>Extracted Tasks</h2>
+                <p class="section-subtitle">AI-identified action items from your logs</p>
+            </div>
+
+            <div class="tasks-controls">
+                <button id="extract-tasks-btn" class="btn btn--primary">
+                    Extract Tasks
+                </button>
+                <div class="tasks-filters">
+                    <select id="task-filter" class="form-control">
+                        <option value="all">All Tasks</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="tasks-loading" class="loading-indicator hidden">
+                <div class="spinner"></div>
+                <p id="tasks-loading-text">Analyzing logs for tasks and action items...</p>
+            </div>
+
+            <div class="tasks-stats hidden" id="tasks-stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="total-tasks">0</span>
+                    <span class="stat-label">Total Tasks</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="completed-tasks">0</span>
+                    <span class="stat-label">Completed</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="pending-tasks">0</span>
+                    <span class="stat-label">Pending</span>
+                </div>
+            </div>
+
+            <div id="tasks-list" class="tasks-list">
+                <!-- Tasks will be dynamically inserted here -->
+            </div>
+
+            <div id="tasks-empty-state" class="empty-state">
+                <div class="empty-state-icon">📋</div>
+                <h3>No tasks identified yet</h3>
+                <p>Add some log entries and extract tasks to see action items</p>
+            </div>
+
+            <!-- Manual Task Addition -->
+            <div class="add-manual-task">
+                <h4>Add Manual Task</h4>
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="manual-task-input" 
+                        class="form-control" 
+                        placeholder="Enter a task..."
+                    >
+                    <select id="manual-task-priority" class="form-control">
+                        <option value="Low">Low Priority</option>
+                        <option value="Medium">Medium Priority</option>
+                        <option value="High">High Priority</option>
+                    </select>
+                </div>
+                <button id="add-manual-task-btn" class="btn btn--secondary">
+                    Add Task
+                </button>
+            </div>
+        </section>
+
+        <!-- API Configuration Modal -->
+        <div id="api-config-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>API Configuration</h3>
+                    <button class="modal-close" id="close-modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>To enable AI features, please configure your Groq API key:</p>
+                    <div class="input-group">
+                        <label for="api-key-input" class="form-label">Groq API Key</label>
+                        <input 
+                            type="password" 
+                            id="api-key-input" 
+                            class="form-control" 
+                            placeholder="Enter your Groq API key..."
+                        >
+                    </div>
+                    <p class="api-note">Your API key is stored locally and never sent to external servers.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="save-api-key" class="btn btn--primary">Save & Connect</button>
+                    <button id="demo-mode" class="btn btn--secondary">Use Demo Mode</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
