@@ -1,0 +1,29 @@
+{
+  "logs": [
+    {
+      "id": 1,
+      "content": "I am not doing well",
+      "timestamp": "23324228092025",
+      "wordCount": 5
+    },
+    {
+      "id": 2,
+      "content": "I have to finish the Flow Chart Course",
+      "timestamp": "23330928092025",
+      "wordCount": 8
+    },
+    {
+      "id": 3,
+      "content": "And whatever I have been doing with linkedin is not right. I am able to put effort at unnecessary places. Now, I should focus on optimizing my linkedin",
+      "timestamp": "23340828092025",
+      "wordCount": 28
+    },
+    {
+      "id": 4,
+      "content": "I should continue the Python Professional Certificate course too. I should utilize the free time during work hours for that.",
+      "timestamp": "23411628092025",
+      "wordCount": 20
+    }
+  ],
+  "nextId": 5
+}
